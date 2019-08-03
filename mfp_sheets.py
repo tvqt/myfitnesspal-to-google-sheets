@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from datetime import datetime, timedelta
 import re
 import sys
+from datetime import datetime, timedelta
 
-import pygsheets
 import myfitnesspal
+import pygsheets
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -103,7 +103,7 @@ def update_sheet_from_mfp(mfp_client: myfitnesspal.Client, sheet: pygsheets.Work
         # Fill in intake and nutrients,
         for nutrient, amount in mfp_day.totals.items():
             if nutrient in header_mapping:
-                #print(f"{nutrient}: {amount}")
+                # print(f"{nutrient}: {amount}")
                 values[header_mapping[nutrient]] = amount
 
         # Fill in exercise
