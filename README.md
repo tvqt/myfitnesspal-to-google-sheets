@@ -16,3 +16,4 @@ Any columns labelled with the following (ignoring case and anything after the fi
 * Sugar
 * Sodium
 * Weight
+* Notes

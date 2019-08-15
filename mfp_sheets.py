@@ -85,14 +85,13 @@ def update_sheet_from_mfp(mfp_client: myfitnesspal.Client, sheet: pygsheets.Work
     last_date = datetime.strptime(last_cell.value, DATE_FORMAT)
 
     header_mapping, row_length = _get_header_mapping(sheet)
-    dates = _date_range(last_date + timedelta(days=1))
 
     weights = {}
     if "weight" in header_mapping:
         print("Fetching weights...")
         weights = mfp_client.get_measurements(lower_bound=last_date.date())
 
-    for date in dates:
+    for date in _date_range(last_date + timedelta(days=1)):
         values = [None] * row_length
         values[0] = date.strftime(DATE_FORMAT)
 
@@ -112,6 +111,10 @@ def update_sheet_from_mfp(mfp_client: myfitnesspal.Client, sheet: pygsheets.Work
         # Fill in goal
         if "goal" in header_mapping:
             values[header_mapping["goal"]] = mfp_day.goals["kilojoules"]
+
+        # Fill in notes
+        if "notes" in header_mapping:
+            values[header_mapping["notes"]] = str(mfp_day.notes)
 
         # Fill in weight
         if "weight" in header_mapping and date.date() in weights:
