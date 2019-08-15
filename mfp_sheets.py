@@ -93,11 +93,10 @@ def update_sheet_from_mfp(mfp_client: myfitnesspal.Client, sheet: pygsheets.Work
         weights = mfp_client.get_measurements(lower_bound=last_date.date())
 
     for date in dates:
-        row += 1
         values = [None] * row_length
         values[0] = date.strftime(DATE_FORMAT)
 
-        print("Updating", date.date())
+        print("Inserting", date.date())
         mfp_day = mfp_client.get_date(date)  # type: myfitnesspal.day.Day
 
         # Fill in intake and nutrients,
@@ -118,7 +117,8 @@ def update_sheet_from_mfp(mfp_client: myfitnesspal.Client, sheet: pygsheets.Work
         if "weight" in header_mapping and date.date() in weights:
             values[header_mapping["weight"]] = weights[date.date()]
 
-        sheet.update_row(row, values)
+        sheet.insert_rows(row, 1, values)
+        row += 1
 
 
 def main():
