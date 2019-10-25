@@ -97,6 +97,8 @@ def update_sheet_from_mfp(mfp_client: myfitnesspal.Client, sheet: pygsheets.Work
 
         print("Inserting", date.date())
         mfp_day = mfp_client.get_date(date)  # type: myfitnesspal.day.Day
+        if not mfp_day.totals:
+            print("Warning: no totals for date")
 
         # Fill in intake and nutrients,
         for nutrient, amount in mfp_day.totals.items():
@@ -130,7 +132,7 @@ def main():
     gs_client = pygsheets.authorize()
     print("Opening spreadsheet...")
     # TODO: detect if sheet exists
-    sheet = gs_client.open("Fitness data").worksheet("title", "MFP data")
+    sheet = gs_client.open("Fitness data").worksheet("title", "MFP")
     update_sheet_from_mfp(mfp_client, sheet)
 
 
